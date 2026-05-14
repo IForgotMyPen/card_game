@@ -1,4 +1,6 @@
-// Setting up card class and suits/ranks to fill the deck
+let current_deck;
+
+// Card class for individual cards
 
 class Card {
     #suit;
@@ -16,6 +18,8 @@ class Card {
     get image() {return this.#image}
 }
 
+// Deck class for full decks (not necessarily the standard 52-card deck)
+
 class Deck {
     #name;
     #card_count;
@@ -25,6 +29,19 @@ class Deck {
         this.#name = name;
         this.#cards = cards;
         this.#card_count = cards.length;
+
+        // Appending a new button to the body to switch the current_deck variable to this deck
+
+        const deck_placeholder = this;
+
+        const new_button = document.createElement('button');
+        new_button.textContent = `${this.#name}`;
+        new_button.type = 'button';
+        new_button.onclick = function() {
+            current_deck = deck_placeholder;
+            document.getElementById('current_deck').innerHTML = `Current deck: ${current_deck.name}`;
+        };
+        document.body.prepend(new_button);
     }
 
     get name() {return this.#name;}
@@ -40,6 +57,9 @@ class Deck {
         return this.#cards[getRandomInt(this.#card_count)];
     }
 
+    // Draw a card from the deck
+    // TODO: make it so when a card is drawn, it is removed from the deck
+
     draw() {
         const rand_card = this.getRandomCard();
 
@@ -49,6 +69,8 @@ class Deck {
         html_card.title = `${capitalize(rand_card.rank)} of ${capitalize(rand_card.suit)}s`;
     }
 }
+
+// Creating placeholder decks for testing new things
 
 const suits = ['spade', 'heart', 'diamond', 'club'];
 
@@ -68,8 +90,6 @@ for (const rank of ranks) {
 
 const deck1 = new Deck('standard deck', deck1_cards);
 const deck2 = new Deck('all-hearts deck', deck2_cards);
-
-const current_deck = deck2;
 
 // Helper method for capitalizing
 
