@@ -27,13 +27,15 @@ class Deck {
     #name;
     #cardCount;
     #cards;
+    #availableCards
 
     constructor(name, cards) {
-        this.#name = name;
-        this.#cards = cards;
-        this.#cardCount = cards.length;
+        this.#name = name; // name of the deck
+        this.#cardCount = cards.length; // number of cards in the deck
+        this.#cards = cards; // all cards in the deck (never edited)
+        this.#availableCards = [...this.#cards]; // all cards available to draw (gets edited)
 
-        // Prepending a new button to the body to switch the current_deck variable to this deck
+        // Prepending a new button to the body to switch the currentDeck variable to this deck
 
         const deckPlaceholder = this;
 
@@ -46,7 +48,7 @@ class Deck {
         };
         document.body.prepend(newButton);
 
-        // If this is the first deck created, make it current_deck
+        // If this is the first deck created, make it currentDeck
 
         if (currentDeck === undefined) {
             currentDeck = deckPlaceholder;
@@ -57,28 +59,27 @@ class Deck {
     get name() {return this.#name;}
     get cardCount() {return this.#cardCount;}
     get cards() {return this.#cards;}
+    get availableCards() {return this.#availableCards;}
 
-    // Get a random card in the deck
-
-    getRandomCard() {
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-        }
-        return this.#cards[getRandomInt(this.#cardCount)];
-    }
-
-    // Draw a card from the deck
+    // Draw a card from the available cards in the deck
 
     draw() {
 
         // Simple catch to end the function if the deck is empty
 
-        if (currentDeck.card_count === 0) {
+        if (currentDeck.cardCount === 0) {
             console.log('REMOVE: current deck is empty');
             return;
         }
 
-        const randCard = this.getRandomCard();
+        // Get a random card from the available cards in the deck
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+        const randCard = this.#availableCards[getRandomInt(this.#cardCount)];
+
+        // Set up new card image
 
         const newCard = document.createElement('img');
         newCard.src = `${randCard.image}`;
@@ -100,14 +101,21 @@ class Deck {
         this.removeCard(randCard);
     }
 
-    // Helper method to remove a card from the deck
+    // Helper method to remove a card from the available cards in the deck
 
     removeCard(card) {
-        const index = this.#cards.indexOf(card);
+        const index = this.#availableCards.indexOf(card);
         if (index > -1) {
-            this.#cards.splice(index, 1);
+            this.#availableCards.splice(index, 1);
         }
         this.#cardCount -= 1;
+    }
+
+    // Method to reset the deck (i.e. make all cards available again)
+
+    resetDeck() {
+        this.#availableCards = [...this.#cards];
+        this.#cardCount = this.#cards.length;
     }
 }
 
