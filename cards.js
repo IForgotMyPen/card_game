@@ -1,7 +1,7 @@
 // Some "global variables" that are useful throughout the project
 
-let current_deck;
-let image_offset = '0px';
+let currentDeck;
+let imageOffset = '0px';
 
 // Card class for individual cards
 
@@ -25,37 +25,37 @@ class Card {
 
 class Deck {
     #name;
-    #card_count;
+    #cardCount;
     #cards;
 
     constructor(name, cards) {
         this.#name = name;
         this.#cards = cards;
-        this.#card_count = cards.length;
+        this.#cardCount = cards.length;
 
         // Prepending a new button to the body to switch the current_deck variable to this deck
 
-        const deck_placeholder = this;
+        const deckPlaceholder = this;
 
-        const new_button = document.createElement('button');
-        new_button.textContent = `${this.#name}`;
-        new_button.type = 'button';
-        new_button.onclick = function() {
-            current_deck = deck_placeholder;
-            document.getElementById('current_deck').innerHTML = `Current deck: ${current_deck.name}`;
+        const newButton = document.createElement('button');
+        newButton.textContent = `${this.#name}`;
+        newButton.type = 'button';
+        newButton.onclick = function() {
+            currentDeck = deckPlaceholder;
+            document.getElementById('current_deck').innerHTML = `Current deck: ${currentDeck.name}`;
         };
-        document.body.prepend(new_button);
+        document.body.prepend(newButton);
 
         // If this is the first deck created, make it current_deck
 
-        if (current_deck === undefined) {
-            current_deck = deck_placeholder;
-            document.getElementById('current_deck').innerHTML = `Current deck: ${current_deck.name}`;
+        if (currentDeck === undefined) {
+            currentDeck = deckPlaceholder;
+            document.getElementById('current_deck').innerHTML = `Current deck: ${currentDeck.name}`;
         }
     }
 
     get name() {return this.#name;}
-    get card_count() {return this.#card_count;}
+    get cardCount() {return this.#cardCount;}
     get cards() {return this.#cards;}
 
     // Get a random card in the deck
@@ -64,7 +64,7 @@ class Deck {
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
-        return this.#cards[getRandomInt(this.#card_count)];
+        return this.#cards[getRandomInt(this.#cardCount)];
     }
 
     // Draw a card from the deck
@@ -73,31 +73,31 @@ class Deck {
 
         // Simple catch to end the function if the deck is empty
 
-        if (current_deck.card_count === 0) {
+        if (currentDeck.card_count === 0) {
             console.log('REMOVE: current deck is empty');
             return;
         }
 
-        const rand_card = this.getRandomCard();
+        const randCard = this.getRandomCard();
 
-        const new_card = document.createElement('img');
-        new_card.src = `${rand_card.image}`;
-        new_card.title = `${capitalize(rand_card.rank)} of ${capitalize(rand_card.suit)}s`;
-        new_card.style.position = 'absolute';
-        new_card.style.top = 0;
-        new_card.style.left = image_offset;
-        new_card.style.width = '200px'
+        const newCard = document.createElement('img');
+        newCard.src = `${randCard.image}`;
+        newCard.title = `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`;
+        newCard.style.position = 'absolute';
+        newCard.style.top = 0;
+        newCard.style.left = imageOffset;
+        newCard.style.width = '200px'
 
         // This is my somewhat confusing way of adjusting the offset so each card lays on top of the last
 
-        const new_offset = Number(image_offset.split('px')[0]) + 30;
-        image_offset = `${new_offset}px`; 
+        const newOffset = Number(imageOffset.split('px')[0]) + 30;
+        imageOffset = `${newOffset}px`; 
 
-        document.getElementById('cardImages').append(new_card);
+        document.getElementById('cardImages').append(newCard);
 
         // Remove card from deck
 
-        this.removeCard(rand_card);
+        this.removeCard(randCard);
     }
 
     // Helper method to remove a card from the deck
@@ -107,7 +107,7 @@ class Deck {
         if (index > -1) {
             this.#cards.splice(index, 1);
         }
-        this.#card_count -= 1;
+        this.#cardCount -= 1;
     }
 }
 
@@ -117,20 +117,20 @@ const suits = ['spade', 'heart', 'diamond', 'club'];
 
 const ranks = ['ace',2,3,4,5,6,7,8,9,10,'jack','queen','king'];
 
-const deck1_cards = [];
+const deck1Cards = [];
 for (const suit of suits) {
     for (const rank of ranks) {
-        deck1_cards.push(new Card(suit, rank, `${suit}_${rank}.png`));
+        deck1Cards.push(new Card(suit, rank, `${suit}_${rank}.png`));
     }
 }
 
-const deck2_cards = [];
+const deck2Cards = [];
 for (const rank of ranks) {
-    deck2_cards.push(new Card('heart', rank, `heart_${rank}.png`));
+    deck2Cards.push(new Card('heart', rank, `heart_${rank}.png`));
 }
 
-const deck1 = new Deck('standard deck', deck1_cards);
-const deck2 = new Deck('all-hearts deck', deck2_cards);
+const deck1 = new Deck('standard deck', deck1Cards);
+const deck2 = new Deck('all-hearts deck', deck2Cards);
 
 // Helper method for capitalizing
 
