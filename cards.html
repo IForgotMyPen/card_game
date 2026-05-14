@@ -5,11 +5,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: black">
+    <div id="staticElements">
     <p></p>
     <button type="button" onclick="currentDeck.draw()">Draw</button>
     <button type="button" onclick="currentDeck.resetDeck()">Reset current deck</button>
+    <button type="button" onclick="clearBoard()">Clear the board</button>
     <p></p>
-    <p id="current_deck" style="color: white">Current deck:</p>
+    <p id="currentDeck" style="color: white">Current deck:</p>
+    </div>
 
     <div id="cardImages">
     </div>

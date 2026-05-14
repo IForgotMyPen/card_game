@@ -1,7 +1,16 @@
 // Some "global variables" that are useful throughout the project
 
-let currentDeck;
-let imageOffset = '0px';
+let currentDeck = {
+    draw() {
+        alert("ERROR: Current deck not selected.")
+    },
+    resetDeck() {
+        alert("ERROR: Current deck not selected.");
+    }
+} // This variable will control which deck is drawn and selected from
+  // Initialize it as an object with these functions for error management
+
+let imageOffset = '0px'; // For controlling where the next drawn card will be placed on the screen
 
 // Card class for individual cards
 
@@ -44,16 +53,9 @@ class Deck {
         newButton.type = 'button';
         newButton.onclick = function() {
             currentDeck = deckPlaceholder;
-            document.getElementById('current_deck').innerHTML = `Current deck: ${currentDeck.name}`;
+            document.getElementById('currentDeck').innerHTML = `Current deck: ${currentDeck.name}`;
         };
         document.body.prepend(newButton);
-
-        // If this is the first deck created, make it currentDeck
-
-        if (currentDeck === undefined) {
-            currentDeck = deckPlaceholder;
-            document.getElementById('current_deck').innerHTML = `Current deck: ${currentDeck.name}`;
-        }
     }
 
     get name() {return this.#name;}
@@ -61,14 +63,14 @@ class Deck {
     get cards() {return this.#cards;}
     get availableCards() {return this.#availableCards;}
 
-    // Draw a card from the available cards in the deck
+    // Method for drawing a card from the available cards in the deck
 
     draw() {
 
         // Simple catch to end the function if the deck is empty
 
         if (currentDeck.cardCount === 0) {
-            console.log('REMOVE: current deck is empty');
+            alert('ERROR: Current deck is empty. Try resetting.');
             return;
         }
 
@@ -140,8 +142,15 @@ for (const rank of ranks) {
 const deck1 = new Deck('standard deck', deck1Cards);
 const deck2 = new Deck('all-hearts deck', deck2Cards);
 
-// Helper method for capitalizing
+// Function for capitalizing
 
 function capitalize(str) {
     return String(str).charAt(0).toUpperCase() + String(str).slice(1);
+}
+
+// Function for clearing the board of cards
+
+function clearBoard() {
+    document.getElementById('cardImages').innerHTML = '';
+    imageOffset= '0px';
 }
