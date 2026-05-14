@@ -33,7 +33,7 @@ class Deck {
         this.#cards = cards;
         this.#card_count = cards.length;
 
-        // Appending a new button to the body to switch the current_deck variable to this deck
+        // Prepending a new button to the body to switch the current_deck variable to this deck
 
         const deck_placeholder = this;
 
@@ -45,6 +45,13 @@ class Deck {
             document.getElementById('current_deck').innerHTML = `Current deck: ${current_deck.name}`;
         };
         document.body.prepend(new_button);
+
+        // If this is the first deck created, make it current_deck
+
+        if (current_deck === undefined) {
+            current_deck = deck_placeholder;
+            document.getElementById('current_deck').innerHTML = `Current deck: ${current_deck.name}`;
+        }
     }
 
     get name() {return this.#name;}
@@ -61,9 +68,16 @@ class Deck {
     }
 
     // Draw a card from the deck
-    // TODO: make it so when a card is drawn, it is removed from the deck
 
     draw() {
+
+        // Simple catch to end the function if the deck is empty
+
+        if (current_deck.card_count === 0) {
+            console.log('REMOVE: current deck is empty');
+            return;
+        }
+
         const rand_card = this.getRandomCard();
 
         const new_card = document.createElement('img');
@@ -80,6 +94,20 @@ class Deck {
         image_offset = `${new_offset}px`; 
 
         document.getElementById('cardImages').append(new_card);
+
+        // Remove card from deck
+
+        this.removeCard(rand_card);
+    }
+
+    // Helper method to remove a card from the deck
+
+    removeCard(card) {
+        const index = this.#cards.indexOf(card);
+        if (index > -1) {
+            this.#cards.splice(index, 1);
+        }
+        this.#card_count -= 1;
     }
 }
 
