@@ -1,4 +1,7 @@
+// Some "global variables" that are useful throughout the project
+
 let current_deck;
+let image_offset = '0px';
 
 // Card class for individual cards
 
@@ -63,10 +66,20 @@ class Deck {
     draw() {
         const rand_card = this.getRandomCard();
 
-        const html_card = document.getElementById('card_image');
+        const new_card = document.createElement('img');
+        new_card.src = `${rand_card.image}`;
+        new_card.title = `${capitalize(rand_card.rank)} of ${capitalize(rand_card.suit)}s`;
+        new_card.style.position = 'absolute';
+        new_card.style.top = 0;
+        new_card.style.left = image_offset;
+        new_card.style.width = '200px'
 
-        html_card.src = `${rand_card.image}`;
-        html_card.title = `${capitalize(rand_card.rank)} of ${capitalize(rand_card.suit)}s`;
+        // This is my somewhat confusing way of adjusting the offset so each card lays on top of the last
+
+        const new_offset = Number(image_offset.split('px')[0]) + 30;
+        image_offset = `${new_offset}px`; 
+
+        document.getElementById('cardImages').append(new_card);
     }
 }
 
