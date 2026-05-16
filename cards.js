@@ -1,11 +1,25 @@
 // Some "global variables" that are useful throughout the project
 
+let errorMessageTimeout; // Error message timeout time
+
 let currentDeck = {
     draw() {
-        alert("ERROR: Current deck not selected.")
+        if (errorMessageTimeout !== undefined) {
+            clearTimeout(errorMessageTimeout);
+        }
+        const errorMessage = document.querySelector('#error-message');
+            errorMessage.textContent = 'Error: No deck selected.';
+
+            errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
     },
     resetDeck() {
-        alert("ERROR: Current deck not selected.");
+        if (errorMessageTimeout !== undefined) {
+            clearTimeout(errorMessageTimeout);
+        }
+        const errorMessage = document.querySelector('#error-message');
+            errorMessage.textContent = 'Error: No deck selected.';
+
+            errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
     }
 } // This variable will control which deck is drawn and selected from
   // Initialize it as an object with these functions for error management
@@ -44,18 +58,29 @@ class Deck {
         this.#cards = cards; // all cards in the deck (never edited)
         this.#availableCards = [...this.#cards]; // all cards available to draw (gets edited)
 
-        // Prepending a new button to the body to switch the currentDeck variable to this deck
+        // Appending a new button to the deck-buttons div to switch the currentDeck variable to this deck
 
         const deckPlaceholder = this;
 
         const newButton = document.createElement('button');
         newButton.textContent = `${this.#name}`;
         newButton.type = 'button';
-        newButton.onclick = function() {
+        newButton.id = 'deck-button';
+        newButton.addEventListener('click', () => {
             currentDeck = deckPlaceholder;
-            document.getElementById('currentDeck').innerHTML = `Current deck: ${currentDeck.name}`;
-        };
-        document.body.prepend(newButton);
+            newButton.style.backgroundColor = 'gray';
+            newButton.style.color = 'white';
+
+            // Change all other buttons back to default color
+            
+            Array.from(document.querySelectorAll('#deck-button'))
+                .filter((deckButton) => deckButton !== newButton)
+                .forEach((deckButton) => {
+                    deckButton.style.backgroundColor = '';
+                    deckButton.style.color = '';
+                });
+        })
+        document.querySelector('#deck-buttons').append(newButton); 
     }
 
     get name() {return this.#name;}
@@ -70,7 +95,13 @@ class Deck {
         // Simple catch to end the function if the deck is empty
 
         if (currentDeck.cardCount === 0) {
-            alert('ERROR: Current deck is empty. Try resetting.');
+            if (errorMessageTimeout !== undefined) {
+                clearTimeout(errorMessageTimeout);
+            }
+            const errorMessage = document.querySelector('#error-message');
+            errorMessage.textContent = 'Error: Deck empty. Try resetting.';
+
+            errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
             return;
         }
 
@@ -89,14 +120,14 @@ class Deck {
         newCard.style.position = 'absolute';
         newCard.style.top = 0;
         newCard.style.left = imageOffset;
-        newCard.style.width = '200px'
+        newCard.style.width = '200px';
 
         // This is my somewhat confusing way of adjusting the offset so each card lays on top of the last
 
         const newOffset = Number(imageOffset.split('px')[0]) + 30;
         imageOffset = `${newOffset}px`; 
 
-        document.getElementById('cardImages').append(newCard);
+        document.getElementById('card-images').append(newCard);
 
         // Remove card from deck
 
@@ -151,6 +182,6 @@ function capitalize(str) {
 // Function for clearing the board of cards
 
 function clearBoard() {
-    document.getElementById('cardImages').innerHTML = '';
+    document.getElementById('card-images').innerHTML = '';
     imageOffset= '0px';
 }
