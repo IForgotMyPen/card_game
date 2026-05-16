@@ -79,6 +79,9 @@ class Deck {
                     deckButton.style.backgroundColor = '';
                     deckButton.style.color = '';
                 });
+
+            document.querySelector('#remaining-cards').textContent = 
+            `Remaining cards: ${this.#cardCount}/${this.#cards.length}`;
         })
         document.querySelector('#deck-buttons').append(newButton); 
     }
@@ -142,6 +145,9 @@ class Deck {
             this.#availableCards.splice(index, 1);
         }
         this.#cardCount -= 1;
+
+        document.querySelector('#remaining-cards').textContent = 
+            `Remaining cards: ${this.#cardCount}/${this.#cards.length}`;
     }
 
     // Method to reset the deck (i.e. make all cards available again)
@@ -149,6 +155,9 @@ class Deck {
     resetDeck() {
         this.#availableCards = [...this.#cards];
         this.#cardCount = this.#cards.length;
+
+        document.querySelector('#remaining-cards').textContent = 
+            `Remaining cards: ${this.#cardCount}/${this.#cards.length}`;
     }
 }
 
