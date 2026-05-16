@@ -65,25 +65,28 @@ class Deck {
         const newButton = document.createElement('button');
         newButton.textContent = `${this.#name}`;
         newButton.type = 'button';
-        newButton.id = 'deck-button';
         newButton.addEventListener('click', () => {
             currentDeck = deckPlaceholder;
-            newButton.style.backgroundColor = 'gray';
-            newButton.style.color = 'white';
+            Object.assign(newButton.style, {
+                backgroundColor: 'gray',
+                color: 'white'
+            })
 
             // Change all other buttons back to default color
-            
-            Array.from(document.querySelectorAll('#deck-button'))
+
+            Array.from(document.querySelector('.deck-buttons').children)
                 .filter((deckButton) => deckButton !== newButton)
                 .forEach((deckButton) => {
-                    deckButton.style.backgroundColor = '';
-                    deckButton.style.color = '';
+                    Object.assign(deckButton.style, {
+                        backgroundColor: '',
+                        color: ''
+                    })
                 });
 
             document.querySelector('#remaining-cards').textContent = 
             `Remaining cards: ${this.#cardCount}/${this.#cards.length}`;
         })
-        document.querySelector('#deck-buttons').append(newButton); 
+        document.querySelector('.deck-buttons').append(newButton); 
     }
 
     get name() {return this.#name;}
@@ -120,17 +123,20 @@ class Deck {
         const newCard = document.createElement('img');
         newCard.src = `${randCard.image}`;
         newCard.title = `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`;
-        newCard.style.position = 'absolute';
-        newCard.style.top = 0;
-        newCard.style.left = imageOffset;
-        newCard.style.width = '200px';
+
+        Object.assign(newCard.style, {
+            position: 'absolute',
+            top: 0,
+            left: imageOffset,
+            width: '200px'
+        })
 
         // This is my somewhat confusing way of adjusting the offset so each card lays on top of the last
 
         const newOffset = Number(imageOffset.split('px')[0]) + 30;
         imageOffset = `${newOffset}px`; 
 
-        document.getElementById('card-images').append(newCard);
+        document.querySelector('.card-images').append(newCard);
 
         // Remove card from deck
 
@@ -191,6 +197,6 @@ function capitalize(str) {
 // Function for clearing the board of cards
 
 function clearBoard() {
-    document.getElementById('card-images').innerHTML = '';
+    document.querySelector('.card-images').innerHTML = '';
     imageOffset= '0px';
 }
