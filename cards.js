@@ -58,14 +58,17 @@ class Deck {
         this.#cards = cards; // all cards in the deck (never edited)
         this.#availableCards = [...this.#cards]; // all cards available to draw (gets edited)
 
-        // Appending a new button to the deck-buttons div to switch the currentDeck variable to this deck
+        // Appending a new button to the deck-buttons div to switch the currentDeck variable 
+        // to this deck
 
         const deckPlaceholder = this;
 
-        const newButton = document.createElement('button');
-        newButton.textContent = `${this.#name} ${this.#cardCount}`;
-        newButton.type = 'button';
-        newButton.id = `${this.#name}-button`;
+        const newButton = Object.assign(document.createElement('button'), {
+            textContent: `${this.#name} ${this.#cardCount}`,
+            type: 'button',
+            id: `${this.#name}-button`
+        })
+
         newButton.addEventListener('click', () => {
             currentDeck = deckPlaceholder;
             Object.assign(newButton.style, {
@@ -118,9 +121,10 @@ class Deck {
 
         // Set up new card image
 
-        const newCard = document.createElement('img');
-        newCard.src = `${randCard.image}`;
-        newCard.title = `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`;
+        const newCard = Object.assign(document.createElement('img'), {
+            src: `${randCard.image}`,
+            title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`
+        })
 
         Object.assign(newCard.style, {
             position: 'absolute',
@@ -129,14 +133,15 @@ class Deck {
             width: '200px'
         })
 
-        // This is my somewhat confusing way of adjusting the offset so each card lays on top of the last
+        // This is my somewhat confusing way of adjusting the offset so each card lays 
+        // on top of the last
 
         const newOffset = Number(imageOffset.split('px')[0]) + 30;
         imageOffset = `${newOffset}px`; 
 
         document.querySelector('.card-images').append(newCard);
 
-        // Remove card from deck
+        // Remove card from available cards in deck
 
         this.removeCard(randCard);
     }
