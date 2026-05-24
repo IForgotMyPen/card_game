@@ -1,5 +1,7 @@
 // Some "global variables" that are useful throughout the project
 
+let currentTab;
+
 let errorMessageTimeout; // Error message timeout time
 
 let currentDeck = {
@@ -30,6 +32,18 @@ let imageLeftOffset = '0px'; // For controlling where the next drawn card will b
 // Function for changing the tab
 
 function changeTab(event, newTab) {
+
+    // This might or might not stay, but it is moving the deck buttons between tabs
+
+    if (currentTab === undefined) {currentTab = 'zen-mode'} // This isn't pretty, but the buttons
+                                                            // will always appear on the first tab 
+                                                            // first
+    const buttons = document.querySelector(`#${currentTab}`).querySelectorAll('.deck-links');
+    const newLocation = document.querySelector(`#${newTab}`).querySelector('.deck-selection-menu');
+    buttons.forEach((button) => newLocation.append(button));
+    
+    currentTab = newTab;
+
     document.querySelectorAll('.tab-content')
         .forEach((tab) => tab.style.display = 'none');
 
