@@ -84,26 +84,16 @@ class Deck {
             textContent: `${this.#name} ${this.#cardCount}`,
             type: 'button',
             id: `${this.#name}-button`,
-            class: 'deck-links'
+            className: 'deck-links'
         })
 
         newButton.addEventListener('click', () => {
             currentDeck = deckPlaceholder;
-            Object.assign(newButton.style, {
-                backgroundColor: 'gray',
-                color: 'white'
-            })
 
-            // Change all other buttons back to default color
+            document.querySelectorAll('.deck-links')
+                .forEach((deckButton) => deckButton.classList.remove('active'));
 
-            Array.from(document.querySelector('.deck-selection-menu').children)
-                .filter((deckButton) => deckButton !== newButton)
-                .forEach((deckButton) => {
-                    Object.assign(deckButton.style, {
-                        backgroundColor: '',
-                        color: ''
-                    })
-                });
+            newButton.classList.add('active');
         })
         document.querySelector('.deck-selection-menu').append(newButton); 
     }
