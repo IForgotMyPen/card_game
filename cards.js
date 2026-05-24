@@ -75,7 +75,7 @@ class Deck {
         this.#cards = cards; // all cards in the deck (never edited)
         this.#availableCards = [...this.#cards]; // all cards available to draw (gets edited)
 
-        // Appending a new button to the deck-buttons div to switch the currentDeck variable 
+        // Appending a new button to the deck-selection-menu div to switch the currentDeck variable 
         // to this deck
 
         const deckPlaceholder = this;
@@ -83,7 +83,8 @@ class Deck {
         const newButton = Object.assign(document.createElement('button'), {
             textContent: `${this.#name} ${this.#cardCount}`,
             type: 'button',
-            id: `${this.#name}-button`
+            id: `${this.#name}-button`,
+            class: 'deck-links'
         })
 
         newButton.addEventListener('click', () => {
@@ -95,7 +96,7 @@ class Deck {
 
             // Change all other buttons back to default color
 
-            Array.from(document.querySelector('.deck-buttons').children)
+            Array.from(document.querySelector('.deck-selection-menu').children)
                 .filter((deckButton) => deckButton !== newButton)
                 .forEach((deckButton) => {
                     Object.assign(deckButton.style, {
@@ -104,7 +105,7 @@ class Deck {
                     })
                 });
         })
-        document.querySelector('.deck-buttons').append(newButton); 
+        document.querySelector('.deck-selection-menu').append(newButton); 
     }
 
     get name() {return this.#name;}
@@ -140,7 +141,8 @@ class Deck {
 
         const newCard = Object.assign(document.createElement('img'), {
             src: `${randCard.image}`,
-            title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`
+            title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`,
+            class: 'card-images'
         })
 
         // If the cards reach the edge of the screen, move them down a row
@@ -165,7 +167,7 @@ class Deck {
         const newLeftOffset = Number(imageLeftOffset.split('px')[0]) + 30;
         imageLeftOffset = `${newLeftOffset}px`; 
 
-        document.querySelector('.card-images').append(newCard);
+        document.querySelector('.card-display-area').append(newCard);
 
         // Remove card from available cards in deck
 
@@ -205,7 +207,7 @@ function capitalize(str) {
 // Function for clearing the board of cards
 
 function clearBoard() {
-    document.querySelector('.card-images').innerHTML = '';
+    document.querySelector('.card-display-area').innerHTML = '';
     imageLeftOffset = '0px';
     imageTopOffset = '0px';
 }

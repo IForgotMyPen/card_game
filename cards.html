@@ -6,7 +6,7 @@
 </head>
 <body>
 
-    <div class="tab">
+    <div class="tab-menu">
         <button type="button" class="tab-links" onclick="changeTab(event, 'zen-mode')">Zen Mode</button>
         <button type="button" class="tab-links" onclick="changeTab(event, 'time-mode')">Time Mode</button>
     </div>
@@ -15,19 +15,20 @@
 
     <div id="zen-mode" class="tab-content">
 
-        <div class="deck-buttons">
+        <div class="deck-selection-menu">
         </div>
 
-        <div class="static-elements">
-            <p></p>
-            <button type="button" onclick="currentDeck.draw()">Draw</button>
-            <button type="button" onclick="currentDeck.resetDeck()">Reset deck</button>
-            <button type="button" onclick="clearBoard()">Clear board</button>
+        <p></p>
+
+        <div class="action-menu">
+            <button type="button" class="action-links" onclick="currentDeck.draw()">Draw</button>
+            <button type="button" class="action-links" onclick="currentDeck.resetDeck()">Reset deck</button>
+            <button type="button" class="action-links" onclick="clearBoard()">Clear board</button>
         </div>
 
         <p id="error-message"></p>
 
-        <div class="card-images">
+        <div class="card-display-area">
         </div>
 
     </div>

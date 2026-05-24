@@ -5,25 +5,25 @@
 body {
     background-color: beige;
 }
-.card-images {
-    position: relative;
-    top: 0;
-    left: 0;
-}
-#error-message {
-    color: red;
-}
-.deck-buttons {
-    text-align: center;
-}
-.static-elements {
-    text-align: center;
-}
-.tab {
+.tab-menu {
     text-align: center;
 }
 .tab-content {
     display: none;
+}
+.deck-selection-menu {
+    text-align: center;
+}
+.action-menu {
+    text-align: center;
+}
+#error-message {
+    color: red;
+}
+.card-display-area {
+    position: relative;
+    top: 0;
+    left: 0;
 }
 .active {
     background-color: gray;
