@@ -6,19 +6,34 @@
 </head>
 <body>
 
-    <div class="deck-buttons">
+    <div class="tab">
+        <button type="button" class="tab-links" onclick="changeTab(event, 'zen-mode')">Zen Mode</button>
+        <button type="button" class="tab-links" onclick="changeTab(event, 'time-mode')">Time Mode</button>
     </div>
 
-    <div class="static-elements">
-        <p></p>
-        <button type="button" onclick="currentDeck.draw()">Draw</button>
-        <button type="button" onclick="currentDeck.resetDeck()">Reset deck</button>
-        <button type="button" onclick="clearBoard()">Clear board</button>
+    <p></p>
+
+    <div id="zen-mode" class="tab-content">
+
+        <div class="deck-buttons">
+        </div>
+
+        <div class="static-elements">
+            <p></p>
+            <button type="button" onclick="currentDeck.draw()">Draw</button>
+            <button type="button" onclick="currentDeck.resetDeck()">Reset deck</button>
+            <button type="button" onclick="clearBoard()">Clear board</button>
+        </div>
+
+        <p id="error-message"></p>
+
+        <div class="card-images">
+        </div>
+
     </div>
 
-    <p id="error-message"></p>
-
-    <div class="card-images">
+    <div id="time-mode" class="tab-content">
+        <p>THIS IS TIME MODE!!!</p>
     </div>
 
     <script src="cards.js"></script>

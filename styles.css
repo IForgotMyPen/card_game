@@ -2,6 +2,9 @@
     font-size: large;
     font-family: georgia;
 }
+body {
+    background-color: beige;
+}
 .card-images {
     position: relative;
     top: 0;
@@ -16,6 +19,13 @@
 .static-elements {
     text-align: center;
 }
-body {
-    background-color: beige;
+.tab {
+    text-align: center;
+}
+.tab-content {
+    display: none;
+}
+.active {
+    background-color: gray;
+    color: white;
 }

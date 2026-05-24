@@ -27,6 +27,22 @@ let currentDeck = {
 let imageTopOffset = '0px'; 
 let imageLeftOffset = '0px'; // For controlling where the next drawn card will be placed
 
+
+
+function changeTab(event, newTab) {
+    document.querySelectorAll('.tab-content')
+        .forEach((tab) => tab.style.display = 'none');
+
+    document.querySelectorAll('.tab-links')
+        .forEach((tabLink) => tabLink.classList.remove('active'));
+
+    
+    document.querySelector(`#${newTab}`).style.display = 'block';
+    event.currentTarget.classList.add('active');
+}
+
+
+
 // Card class for individual cards
 
 class Card {
