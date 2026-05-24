@@ -27,7 +27,7 @@ let currentDeck = {
 let imageTopOffset = '0px'; 
 let imageLeftOffset = '0px'; // For controlling where the next drawn card will be placed
 
-
+// Function for changing the tab
 
 function changeTab(event, newTab) {
     document.querySelectorAll('.tab-content')
@@ -40,8 +40,6 @@ function changeTab(event, newTab) {
     document.querySelector(`#${newTab}`).style.display = 'block';
     event.currentTarget.classList.add('active');
 }
-
-
 
 // Card class for individual cards
 
@@ -127,46 +125,52 @@ class Deck {
         }
         const randCard = this.#availableCards[getRandomInt(this.#cardCount)];
 
-        // Set up new card image
+        this.placeCardImageHelper(this.createCardImageHelper(randCard));
 
-        const newCard = Object.assign(document.createElement('img'), {
+        this.removeCardHelper(randCard);
+    }
+
+    // Helper method for creating a card image from a random card
+
+    createCardImageHelper(randCard) {
+        return Object.assign(document.createElement('img'), {
             src: `${randCard.image}`,
             title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`,
             class: 'card-images'
         })
+    }
+
+    // Helper method for placing a card image
+
+    placeCardImageHelper(cardImage) {
 
         // If the cards reach the edge of the screen, move them down a row
 
         if (Number(imageLeftOffset.split('px')[0]) + 210 > window.innerWidth) {
             imageLeftOffset = '0px';
 
+            // Adjusting offset (used again later in method)
+
             const newTopOffset = Number(imageTopOffset.split('px')[0]) + 90;
             imageTopOffset = `${newTopOffset}px`; 
         }
 
-        Object.assign(newCard.style, {
+        Object.assign(cardImage.style, {
             position: 'absolute',
             top: imageTopOffset,
             left: imageLeftOffset,
             width: '200px'
         })
 
-        // This is my somewhat confusing way of adjusting the offset so each card lays 
-        // on top of the last
-
         const newLeftOffset = Number(imageLeftOffset.split('px')[0]) + 30;
         imageLeftOffset = `${newLeftOffset}px`; 
 
-        document.querySelector('.card-display-area').append(newCard);
-
-        // Remove card from available cards in deck
-
-        this.removeCard(randCard);
+        document.querySelector('.card-display-area').append(cardImage);
     }
 
     // Helper method to remove a card from the available cards in the deck
 
-    removeCard(card) {
+    removeCardHelper(card) {
         const index = this.#availableCards.indexOf(card);
         if (index > -1) {
             this.#availableCards.splice(index, 1);
