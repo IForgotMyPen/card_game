@@ -5,10 +5,10 @@
 body {
     background-color: beige;
 }
-.tab-menu {
+.board-menu {
     text-align: center;
 }
-.tab-content {
+.board-content {
     display: none;
 }
 .deck-selection-menu {

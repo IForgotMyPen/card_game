@@ -1,10 +1,8 @@
 // Some "global variables" that are useful throughout the project
 
 let errorMessageTimeout; // Error message timeout time
-
-let currentBoard;
-let boards = [];
-
+let currentBoard; // The currently selected board
+let boards = []; // An array of all boards
 let currentDeck = {
     draw() {
         if (errorMessageTimeout !== undefined) {
@@ -25,16 +23,16 @@ let currentDeck = {
             errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
     }
 } // This variable will control which deck is drawn and selected from
-  // Initialize it as an object with these functions for error management
+  // Initialize it as an object with these methods for error management
 
-// Function for changing the tab
+// Function for changing the board
 
 function changeBoard(event, newBoard) {
 
-    // This might or might not stay, but it is moving the deck buttons between tabs
+    // This might or might not stay, but it is moving the deck buttons between boards
 
     if (currentBoard === undefined) {currentBoard = 'board-1'} // This isn't pretty, but the buttons
-                                                            // will always appear on the first tab 
+                                                            // will always appear on the first board 
                                                             // first
     const buttons = document.querySelector(`#${currentBoard}`).querySelectorAll('.deck-links');
     const newLocation = document.querySelector(`#${newBoard}`).querySelector('.deck-selection-menu');
@@ -42,11 +40,11 @@ function changeBoard(event, newBoard) {
     
     currentBoard = newBoard;
 
-    document.querySelectorAll('.tab-content')
-        .forEach((tab) => tab.style.display = 'none');
+    document.querySelectorAll('.board-content')
+        .forEach((board) => board.style.display = 'none');
 
-    document.querySelectorAll('.tab-links')
-        .forEach((tabLink) => tabLink.classList.remove('active'));
+    document.querySelectorAll('.board-links')
+        .forEach((boardLink) => boardLink.classList.remove('active'));
 
     
     document.querySelector(`#${newBoard}`).style.display = 'block';
