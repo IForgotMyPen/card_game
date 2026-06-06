@@ -237,7 +237,7 @@ class Deck {
         this.#availableCards = [...this.#cards];
         this.#cardCount = this.#cards.length;
 
-        document.querySelector(`#${this.#name}-button`).textContent = 
+        document.querySelector(`#${currentBoard.name}`).querySelector(`#${this.#name}-button`).textContent = 
             `${this.#name} ${this.#cardCount}`;
     }
 }
@@ -253,8 +253,8 @@ function capitalize(str) {
 function clearBoard() {
     document.querySelector(`#${currentBoard.name}`)
         .querySelector('.card-display-area').innerHTML = '';
-    getBoard(currentBoard).setLeftOffset('0px');
-    getBoard(currentBoard).setTopOffset('0px');
+    currentBoard.setLeftOffset('0px');
+    currentBoard.setTopOffset('0px');
 }
 
 
