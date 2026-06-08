@@ -86,16 +86,19 @@ class Card {
     #suit;
     #rank;
     #image;
+    #name;
 
     constructor(suit, rank, image) {
         this.#suit = suit;
         this.#rank = rank;
         this.#image = `cards/${suit}_${rank}.png`;
+        this.#name = `${this.rank} of ${this.suit}s`;
     }
 
     get suit() {return this.#suit;}
     get rank() {return this.#rank;}
-    get image() {return this.#image}
+    get image() {return this.#image;}
+    get name() {return this.#name;}
 }
 
 // Deck class for full decks (not necessarily the standard 52-card deck)
@@ -181,7 +184,8 @@ class Deck {
         return Object.assign(document.createElement('img'), {
             src: `${randCard.image}`,
             title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`,
-            className: 'card-images'
+            className: 'card-images',
+            id: `${randCard.rank}-of-${randCard.suit}s`
         })
     }
 
@@ -266,8 +270,10 @@ let checkTypingLoop;
 let drawLoop;
 
 function startTypingGame() {
+    document.querySelector('#user-typing-input').value = '';
+
     checkTypingLoop = setInterval(checkUserTypingInput, 250);
-    drawLoop = setInterval(drawFromCurrentDeck, 2000);
+    drawLoop = setInterval(drawFromCurrentDeck, 1000);
 }
 
 function stopTypingGame() {
@@ -276,11 +282,19 @@ function stopTypingGame() {
 }
 
 function checkUserTypingInput() {
-    const userTypingInput = document.querySelector('#user-typing-input').value;
+    let userTypingInput = document.querySelector('#user-typing-input').value;
+
+    for (const card of displayedCards) {
+        if (card.name === userTypingInput) {
+            console.log('REMOVE: yes!');
+            document.querySelector('#user-typing-input').value = '';
+
+            document.querySelector('#typing-board').querySelector(`#${card.rank}-of-${card.suit}s`).src = '';
+        }
+    }
 }
 function drawFromCurrentDeck() {
     displayedCards.push(typingBoard.currentDeck.draw());
-    console.log(displayedCards);
 }
 
 
