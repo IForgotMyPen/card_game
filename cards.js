@@ -262,10 +262,19 @@ function clearBoard() {
 // Typing minigame code
 
 const displayedCards = [];
+let checkTypingLoop;
+let drawLoop;
+
 function startTypingGame() {
-    setInterval(checkUserTypingInput, 250);
-    setInterval(drawFromCurrentDeck, 2000);
+    checkTypingLoop = setInterval(checkUserTypingInput, 250);
+    drawLoop = setInterval(drawFromCurrentDeck, 2000);
 }
+
+function stopTypingGame() {
+    clearInterval(checkTypingLoop);
+    clearInterval(drawLoop);
+}
+
 function checkUserTypingInput() {
     const userTypingInput = document.querySelector('#user-typing-input').value;
 }
