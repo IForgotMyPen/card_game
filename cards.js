@@ -265,7 +265,7 @@ function clearBoard() {
 
 // Typing minigame code
 
-const displayedCards = [];
+let displayedCards = [];
 let checkTypingLoop;
 let drawLoop;
 
@@ -284,12 +284,17 @@ function stopTypingGame() {
 function checkUserTypingInput() {
     let userTypingInput = document.querySelector('#user-typing-input').value;
 
-    for (const card of displayedCards) {
+    for (const card of displayedCards) {        
         if (card.name === userTypingInput) {
-            console.log('REMOVE: yes!');
             document.querySelector('#user-typing-input').value = '';
 
             document.querySelector('#typing-board').querySelector(`#${card.rank}-of-${card.suit}s`).src = '';
+
+            displayedCards = displayedCards.filter(filterCard => filterCard.name !== userTypingInput);
+
+            console.log(displayedCards);
+
+            break;
         }
     }
 }
