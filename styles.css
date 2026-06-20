@@ -20,6 +20,9 @@ body {
 #error-message {
     color: red;
 }
+#time-remaining {
+    text-align: center;
+}
 .card-display-area {
     position: relative;
     top: 0;

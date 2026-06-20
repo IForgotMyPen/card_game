@@ -268,42 +268,101 @@ function clearBoard() {
 let displayedCards = [];
 let checkTypingLoop;
 let drawLoop;
+let timeLoop;
+let timeRemaining;
+
+// function for starting the typing minigame
+// basically just starts the function loops
 
 function startTypingGame() {
     document.querySelector('#user-typing-input').value = '';
 
     checkTypingLoop = setInterval(checkUserTypingInput, 50);
-    drawLoop = setInterval(drawFromCurrentDeck, 2500);
+    drawLoop = setInterval(drawFromCurrentDeck, 2000);
+    timeLoop = setInterval(updateTimeRemaining, 1000);
 }
+
+// function for stopping the typing minigame
 
 function stopTypingGame() {
     clearInterval(checkTypingLoop);
     clearInterval(drawLoop);
+    clearInterval(timeLoop);
+
+    // reset deck, clear board and user input area
 
     currentBoard.currentDeck.resetDeck();
     clearBoard();
     document.querySelector('#user-typing-input').value = '';
+
+    // reset time remaining, clear html element
+
+    timeRemaining = undefined;
+    document.querySelector('#typing-board').querySelector('#time-remaining')
+            .innerHTML = '';
 }
+
+// function for checking if the user input the name of a displayed card
+// if user did, it clears that card from the board
+// also checks to see if the player has cleared all the cards, in which case they win
 
 function checkUserTypingInput() {
     let userTypingInput = document.querySelector('#user-typing-input').value;
 
     for (const card of displayedCards) {        
         if (card.name === userTypingInput) {
-            document.querySelector('#user-typing-input').value = '';
+            document.querySelector('#typing-board').querySelector('#user-typing-input').value = '';
 
             document.querySelector('#typing-board').querySelector(`#${card.rank}-of-${card.suit}s`).src = '';
 
             displayedCards = displayedCards.filter(filterCard => filterCard.name !== userTypingInput);
 
-            console.log(displayedCards);
-
             break;
         }
     }
+    if (currentBoard.currentDeck.availableCards.length === 0 && displayedCards.length === 0) {
+        setTimeout(() => {
+            alert('Congratulations! You cleared all the cards before the time ran out!');
+        }, 10);
+        stopTypingGame();
+    }
 }
+
+// function for drawing another card to the board
+
 function drawFromCurrentDeck() {
-    displayedCards.push(typingBoard.currentDeck.draw());
+    if (currentBoard.currentDeck.availableCards.length !== 0) {
+        displayedCards.push(typingBoard.currentDeck.draw());
+    }
+}
+
+// function for getting the initial remaining time based on the length of the currently selected deck
+
+function getInitialTime() {
+    return currentBoard.currentDeck.cardCount * 5;
+}
+
+// function for updating the remaining time
+// also checks if the remaining time hits zero, and ends the game if so
+
+function updateTimeRemaining() {
+    if (timeRemaining === undefined) {
+        timeRemaining = getInitialTime();
+        document.querySelector('#typing-board').querySelector('#time-remaining')
+            .innerHTML = `Time remaining: ${timeRemaining}s`;
+    }
+    else {
+        timeRemaining -= 1;
+        document.querySelector('#typing-board').querySelector('#time-remaining')
+            .innerHTML = `Time remaining: ${timeRemaining}s`;
+    }
+
+    if (timeRemaining === 0) {
+        setTimeout(() => {
+            alert('Game over! You did not clear all of the cards in time!');
+        }, 10);
+        stopTypingGame();
+    }
 }
 
 
