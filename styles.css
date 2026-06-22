@@ -1,9 +1,22 @@
 * {
     font-size: large;
-    font-family: georgia;
+    font-family: monospace;
 }
 body {
-    background-color: beige;
+    background: #101c1c;
+}
+button {
+    border-radius: 0;
+    border-color: #3C4E4E;
+    border-width: 0.6mm;
+    background-color: white;
+    transition-duration: 0.5s;
+    background-color: #101c1c;
+    color: white;
+}
+button:hover {
+    border-color: #9ab1b1;
+    transform: translateY(-1px);
 }
 .board-menu {
     text-align: center;
@@ -22,6 +35,7 @@ body {
 }
 #time-remaining {
     text-align: center;
+    color: white;
 }
 .card-display-area {
     position: relative;
@@ -31,7 +45,13 @@ body {
 .user-input-area {
     text-align: center;
 }
+#user-typing-input {
+    width: 250px;
+    background-color: #101c1c;
+    color: white;
+    border-color: #9ab1b1;
+}
 .active {
-    background-color: gray;
+    border-color: #9ab1b1;
     color: white;
 }

@@ -375,8 +375,6 @@ function drawFromCurrentDeck() {
     if (currentBoard.currentDeck.availableCards.length !== 0) {
         displayedCards.push(typingBoard.currentDeck.draw());
     }
-
-    console.log(displayedCards);
 }
 
 // function for getting the initial remaining time based on the length of the currently selected deck
