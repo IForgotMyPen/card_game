@@ -4,6 +4,18 @@ let errorMessageTimeout; // Error message timeout time
 let currentBoard; // The currently selected board
 let boards = []; // An array of all boards
 
+// Function for displaying an error message 
+
+function displayErrorMessage(message) {
+    if (errorMessageTimeout !== undefined) {
+        clearTimeout(errorMessageTimeout);
+    }
+    const errorMessage = document.querySelector(`#${currentBoard.name}`).querySelector('#error-message');
+    errorMessage.textContent = message;
+
+    errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
+}
+
 // Function for changing the board
 
 function changeBoard(event, newBoardName) {
@@ -15,13 +27,14 @@ function changeBoard(event, newBoardName) {
     document.querySelectorAll('.board-links')
         .forEach((boardLink) => boardLink.classList.remove('active'));
 
-    
-    document.querySelector(`#${newBoardName}`).style.display = 'flex';
-    document.querySelector(`#${newBoardName}`).style.width = '50%'
-    document.querySelector(`#${newBoardName}`).style.flexDirection = 'column';
-    document.querySelector(`#${newBoardName}`).style.margin = '0px auto';
-    document.querySelector(`#${newBoardName}`).style.alignItems = 'center';
-    document.querySelector(`#${newBoardName}`).style.gap = '10px';
+    Object.assign(document.querySelector(`#${newBoardName}`).style, {
+        display: 'flex',
+        width: '50%',
+        flexDirection: 'column',
+        margin: '0px auto',
+        alignItems: 'center',
+        gap: '10px'
+    })
     event.currentTarget.classList.add('active');
 }
 
@@ -40,22 +53,10 @@ class Board {
         this.#currentDeck = {
             cardCount: -1,
             draw() {
-                if (errorMessageTimeout !== undefined) {
-                    clearTimeout(errorMessageTimeout);
-                }
-                const errorMessage = document.querySelector('#error-message');
-                    errorMessage.textContent = 'Error: No deck selected.';
-
-                    errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
+                displayErrorMessage('Error: No deck selected.');
             },
             resetDeck() {
-                if (errorMessageTimeout !== undefined) {
-                    clearTimeout(errorMessageTimeout);
-                }
-                const errorMessage = document.querySelector('#error-message');
-                    errorMessage.textContent = 'Error: No deck selected.';
-
-                    errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
+                displayErrorMessage('Error: No deck selected.');
             },
         }
         boards.push(this);
@@ -160,13 +161,7 @@ class Deck {
         // Simple catch to end the function if the deck is empty
 
         if (currentBoard.currentDeck.cardCount === 0) {
-            if (errorMessageTimeout !== undefined) {
-                clearTimeout(errorMessageTimeout);
-            }
-            const errorMessage = document.querySelector(`#${currentBoard.name}`).querySelector('#error-message');
-            errorMessage.textContent = 'Error: Deck empty. Try resetting.';
-
-            errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
+            displayErrorMessage('Error: Deck empty. Try resetting.');
             return;
         }
 
@@ -285,14 +280,7 @@ function startTypingGame() {
     // if not, displays and error and does not start the minigame
 
     if (currentBoard.currentDeck.cardCount === -1) {
-        if (errorMessageTimeout !== undefined) {
-            clearTimeout(errorMessageTimeout);
-        }
-        const errorMessage = document.querySelector(`#${currentBoard.name}`).querySelector('#error-message');
-        errorMessage.textContent = 'Error: Cannot start game. Try selecting a deck.';
-
-        errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
-
+        displayErrorMessage('Error: Cannot start game. Try selecting a deck.');
         return;
     }
 
@@ -314,14 +302,7 @@ function startTypingGame() {
 
 function stopTypingGame() {
     if (timeRemaining === undefined) {
-        if (errorMessageTimeout !== undefined) {
-            clearTimeout(errorMessageTimeout);
-        }
-        const errorMessage = document.querySelector(`#${currentBoard.name}`).querySelector('#error-message');
-        errorMessage.textContent = 'Error: No currently running game.';
-
-        errorMessageTimeout = setTimeout(() => errorMessage.textContent = '', 3000);
-
+        displayErrorMessage('Error: No currently running game.');
         return;
     }
 
