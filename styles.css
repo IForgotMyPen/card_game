@@ -28,6 +28,7 @@ button:hover {
     padding-inline: 0;
     padding: 1rem;
     min-height: 100vh;
+    flex-wrap: wrap;
 }
 #error-message {
     color: red;
@@ -50,4 +51,8 @@ button:hover {
 .active {
     border-color: #9ab1b1;
     color: white;
+}
+.card-images {
+    width: 200px;
+    height: 300px;
 }

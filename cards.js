@@ -40,15 +40,11 @@ function changeBoard(event, newBoardName) {
 
 class Board {
     #name; // name of the board
-    #leftOffset; // left offset for placing card images
-    #topOffset; // top offset for placing card images
     #currentDeck; // the currently selected deck on this board
     #decks; // decks on this board
 
     constructor (name) {
         this.#name = name;
-        this.#leftOffset = '0px';
-        this.#topOffset = '0px';
 
         this.#currentDeck = {
             cardCount: -1,
@@ -62,19 +58,9 @@ class Board {
         boards.push(this);
     }
 
-    get name() {return this.#name;}
-    get leftOffset() {return this.#leftOffset;}
-    get topOffset() {return this.#topOffset;}
-    get currentDeck() {return this.#currentDeck;}
-    get decks() {return this.#decks;}
-
-    setLeftOffset(newLeftOffset) {
-        this.#leftOffset = newLeftOffset;
-    }
-    
-    setTopOffset(newTopOffset) {
-        this.#topOffset = newTopOffset;
-    }
+    get name() { return this.#name; }
+    get currentDeck() { return this.#currentDeck; }
+    get decks() { return this.#decks; }
 
     setCurrentDeck(newCurrentDeck) {
         this.#currentDeck = newCurrentDeck;
@@ -148,11 +134,11 @@ class Deck {
             .querySelector('.deck-selection-menu').append(newButton);
     }
 
-    get name() {return this.#name;}
-    get cardCount() {return this.#cardCount;}
-    get cards() {return this.#cards;}
-    get availableCards() {return this.#availableCards;}
-    get board() {return this.#board;}
+    get name() { return this.#name; }
+    get cardCount() { return this.#cardCount; }
+    get cards() { return this.#cards; }
+    get availableCards() { return this.#availableCards; }
+    get board() { return this.#board; }
 
     // Method for drawing a card from the available cards in the deck
 
@@ -172,7 +158,8 @@ class Deck {
         }
         const randCard = this.#availableCards[getRandomInt(this.#cardCount)];
 
-        this.placeCardImageHelper(this.createCardImageHelper(randCard));
+        document.querySelector(`#${currentBoard.name}`).querySelector('.card-display-area')
+            .append(this.createCardImageHelper(randCard))
 
         this.removeCardHelper(randCard);
 
@@ -186,43 +173,8 @@ class Deck {
             src: `${randCard.image}`,
             title: `${capitalize(randCard.rank)} of ${capitalize(randCard.suit)}s`,
             className: 'card-images',
-            id: `${randCard.rank}-of-${randCard.suit}s`
+            id: `${randCard.rank}-of-${randCard.suit}s`,
         })
-    }
-
-    // Helper method for placing a card image
-
-    placeCardImageHelper(cardImage) {
-
-        let imageLeftOffset = currentBoard.leftOffset;
-        let imageTopOffset = currentBoard.topOffset;
-
-        // If the cards reach the edge of the screen, move them down a row
-
-        if (Number(imageLeftOffset.split('px')[0]) + 210 > window.innerWidth) {
-            imageLeftOffset = '0px';
-
-            // Adjusting offset (used again later in method)
-
-            const newTopOffset = Number(imageTopOffset.split('px')[0]) + 90;
-            imageTopOffset = `${newTopOffset}px`; 
-        }
-
-        Object.assign(cardImage.style, {
-            position: 'absolute',
-            top: imageTopOffset,
-            left: imageLeftOffset,
-            width: '200px'
-        })
-
-        const newLeftOffset = Number(imageLeftOffset.split('px')[0]) + 30;
-        imageLeftOffset = `${newLeftOffset}px`; 
-
-        document.querySelector(`#${currentBoard.name}`)
-            .querySelector('.card-display-area').append(cardImage);
-
-        currentBoard.setLeftOffset(imageLeftOffset);
-        currentBoard.setTopOffset(imageTopOffset);
     }
 
     // Helper method to remove a card from the available cards in the deck
@@ -260,8 +212,6 @@ function capitalize(str) {
 function clearBoard() {
     document.querySelector(`#${currentBoard.name}`)
         .querySelector('.card-display-area').innerHTML = '';
-    currentBoard.setLeftOffset('0px');
-    currentBoard.setTopOffset('0px');
 }
 
 // TYPING MINIGAME
@@ -340,7 +290,7 @@ function checkUserTypingInput() {
         if (card.name === userTypingInput) {
             document.querySelector('#typing-board').querySelector('#user-typing-input').value = '';
 
-            document.querySelector('#typing-board').querySelector(`#${card.rank}-of-${card.suit}s`).src = '';
+            document.querySelector('#typing-board').querySelector(`#${card.rank}-of-${card.suit}s`).style.display = 'none';
 
             displayedCards = displayedCards.filter(filterCard => filterCard.name !== userTypingInput);
 
